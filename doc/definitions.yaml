@@ -1,0 +1,104 @@
+---
+openapi: 3.0.0
+info:
+  title: Webscrapped API With MySQL DB
+  description: This is a webscrapper application that generates a list of companies in Canada that sells seafood
+  version: 1.0.0
+servers:
+- url: https://virtserver.swaggerhub.com/samkipp/Webscrapped-API-With-MySQL-DB/1.0.0
+  description: SwaggerHub API Auto Mocking
+- url: http://localhost:3050
+  description: Development server
+paths:
+  /companies:
+    get:
+      tags:
+      - All Companies
+      summary: Retrieve a list of all companies.
+      description: Retrieves a list of companies that exports seafood to a given continent. It Can be used for filtering to return results based on a condition.
+      responses:
+        "200":
+          description: A list of companies
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/inline_response_200'
+  /companies/{id}:
+    get:
+      tags:
+      - Single Company
+      summary: Retrieve a single company using the id.
+      description: Get the profile of a company using its id. It Can be used to populate a companys profile when prototyping or testing an API.
+      parameters:
+      - name: id
+        in: path
+        description: Numeric ID of the company to get
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: A single company
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/inline_response_200'
+  /companies/{continent}:
+    get:
+      tags:
+      - Exports to
+      summary: Retrieve companies that exports to the specified.
+      description: Retrieves a list of companies that exports seafood to a given continent. It Can be used for filtering to return results based on a condition.
+      parameters:
+      - name: continent
+        in: path
+        description: A string of the continent to get
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: A list of companies that exports to some continent
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/inline_response_200'
+components:
+  schemas:
+    inline_response_200:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The company ID.
+          example: 120
+        businessName:
+          type: string
+          description: The company's name.
+          example: Alvin & Rufin Boudreau & Sons Ltd
+        contact:
+          type: string
+          description: Business Contact Person(s).
+          example: Ola Boudreau
+        phoneNumber:
+          type: string
+          description: Contact Person(s) phone number.
+          example: 506-577-2761
+        emailAddress:
+          type: string
+          description: Company's email address.
+          example: arboudreauandsons@rogers.com
+        exportsTo:
+          type: string
+          description: A list of continent the company exports to.
+          example: Central America,North America
